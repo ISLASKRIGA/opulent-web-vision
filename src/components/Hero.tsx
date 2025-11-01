@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import videoFondo from "@/assets/VideoFondo.mp4";
 
 const Hero = () => {
   const scrollToSection = (id: string) => {
@@ -11,9 +12,23 @@ const Hero = () => {
   };
 
   return (
-    <section id="inicio" className="relative min-h-screen flex items-center justify-center luxury-gradient overflow-hidden">
+    <section id="inicio" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Video background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src={videoFondo} type="video/mp4" />
+      </video>
+      
+      {/* Dark overlay for text legibility */}
+      <div className="absolute inset-0 bg-pure-black/60" />
+      
       {/* Decorative elements */}
-      <div className="absolute inset-0 gold-gradient opacity-30" />
+      <div className="absolute inset-0 gold-gradient opacity-20" />
       <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-luxury-gold/5 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-luxury-gold/5 rounded-full blur-3xl" />
 

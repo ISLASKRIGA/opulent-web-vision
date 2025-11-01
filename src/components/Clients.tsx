@@ -1,34 +1,111 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import React, { useRef } from "react";
+import React, { useRef, useEffect, forwardRef } from "react";
+import { Quote } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-// --- DEFINICIONES DE COMPONENTES DE TESTIMONIO (para no crear nuevos archivos) ---
+// --- INICIO: IMPORTACIONES Y DEFINICIÓN DEL BANNER DE TEXTO ---
+import {
+  useScroll,
+  useSpring,
+  useTransform,
+  useVelocity,
+  useAnimationFrame,
+  useMotionValue,
+  wrap,
+} from "framer-motion";
 
-export interface TestimonialAuthor {
-  name: string;
-  handle: string; // 'company' en tus datos anteriores
-  imageSrc?: string; // Opcional: URL de la imagen del autor
+interface ScrollingTextBannerProps {
+  children: string;
+  baseVelocity: number;
+  clasname?: string;
+  scrollDependent?: boolean;
+  delay?: number;
 }
 
+const ScrollingTextBanner = forwardRef<HTMLDivElement, ScrollingTextBannerProps>(
+  ({ children, baseVelocity = -5, clasname, scrollDependent = false, delay = 0 }, ref) => {
+    const baseX = useMotionValue(0);
+    const { scrollY } = useScroll();
+    const scrollVelocity = useVelocity(scrollY);
+    const smoothVelocity = useSpring(scrollVelocity, {
+      damping: 50,
+      stiffness: 400,
+    });
+    const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 2], {
+      clamp: false,
+    });
+
+    const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`);
+
+    const directionFactor = useRef<number>(1);
+    const hasStarted = useRef(false);
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        hasStarted.current = true;
+      }, delay);
+
+      return () => clearTimeout(timer);
+    }, [delay]);
+
+    useAnimationFrame((t, delta) => {
+      if (!hasStarted.current) return;
+
+      let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
+
+      if (scrollDependent) {
+        if (velocityFactor.get() < 0) {
+          directionFactor.current = -1;
+        } else if (velocityFactor.get() > 0) {
+          directionFactor.current = 1;
+        }
+      }
+
+      moveBy += directionFactor.current * moveBy * velocityFactor.get();
+
+      baseX.set(baseX.get() + moveBy);
+    });
+
+    return (
+      <div ref={ref} className="overflow-hidden whitespace-nowrap flex flex-nowrap">
+        <motion.div className="flex whitespace-nowrap gap-10 flex-nowrap" style={{ x }}>
+          <span className={cn(`block text-[8vw]`, clasname)}>{children}</span>
+          <span className={cn(`block text-[8vw]`, clasname)}>{children}</span>
+          <span className={cn(`block text-[8vw]`, clasname)}>{children}</span>
+          <span className={cn(`block text-[8vw]`, clasname)}>{children}</span>
+        </motion.div>
+      </div>
+    );
+  },
+);
+
+ScrollingTextBanner.displayName = "ScrollingTextBanner";
+// --- FIN: DEFINICIÓN DEL BANNER DE TEXTO ---
+
+// --- (Definiciones de TestimonialCard y TestimonialAuthor) ---
+export interface TestimonialAuthor {
+  name: string;
+  handle: string;
+  imageSrc?: string;
+}
 export interface TestimonialCardProps {
   text: string;
   author: TestimonialAuthor;
   href?: string;
   className?: string;
 }
-
-// He creado este componente basándome en los estilos de tu testimonios anteriores
 export const TestimonialCard = React.forwardRef<HTMLDivElement, TestimonialCardProps>(
   ({ text, author, href, className }, ref) => {
+    // ... (Contenido del componente TestimonialCard) ...
     const content = (
       <Card
         ref={ref}
         className={cn(
-          "w-80 shrink-0 rounded-lg", // Ancho fijo para el carrusel
-          "bg-secondary border border-luxury-gold/20 hover:border-luxury-gold/50 transition-luxury group", // Estilos de tu 'Clients.tsx'
+          "w-80 shrink-0 rounded-lg",
+          "bg-secondary border border-luxury-gold/20 hover:border-luxury-gold/50 transition-luxury group",
           className,
         )}
       >
@@ -52,7 +129,6 @@ export const TestimonialCard = React.forwardRef<HTMLDivElement, TestimonialCardP
         </CardContent>
       </Card>
     );
-
     if (href) {
       return (
         <a href={href} target="_blank" rel="noopener noreferrer" className="block">
@@ -60,23 +136,12 @@ export const TestimonialCard = React.forwardRef<HTMLDivElement, TestimonialCardP
         </a>
       );
     }
-
     return content;
   },
 );
-
 TestimonialCard.displayName = "TestimonialCard";
+// --- (Fin de definiciones de Testimonial) ---
 
-// --- FIN DE DEFINICIONES ---
-
-const clients = [
-  { name: "Luxe Brands", logo: "LB" },
-  { name: "Elite Ventures", logo: "EV" },
-  { name: "Premier Corp", logo: "PC" },
-  { name: "Prestige Group", logo: "PG" },
-];
-
-// Datos de testimonios adaptados al nuevo formato
 const testimonials: Array<{ author: TestimonialAuthor; text: string; href?: string }> = [
   {
     text: "WebTomic transformó nuestra presencia digital. El resultado superó todas nuestras expectativas.",
@@ -108,23 +173,26 @@ const Clients = () => {
   return (
     <section id="clientes" ref={ref} className="py-32 bg-card">
       <div className="container mx-auto px-6">
-        {/* Logos Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-24">
-          {clients.map((client, index) => (
-            <motion.div
-              key={client.name}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="flex items-center justify-center h-32 bg-secondary border border-border rounded-lg group cursor-pointer transition-luxury hover:border-luxury-gold"
-            >
-              <div className="text-4xl font-light text-muted-foreground group-hover:text-luxury-gold transition-luxury">
-                {client.logo}
-              </div>
-            </motion.div>
-          ))}
+        {/* Título */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-20"
+        >
+          <h2 className="text-4xl md:text-5xl font-light mb-4 tracking-tight">
+            Clientes que confían en la <span className="text-luxury-gold">excelencia</span>
+          </h2>
+          <p className="text-xl text-muted-foreground font-light">Marcas premium que eligieron WebTomic</p>
+        </motion.div>
+
+        {/* --- INICIO: BANNER DE TEXTO REEMPLAZANDO LOS LOGOS --- */}
+        <div className="mb-24">
+          <ScrollingTextBanner baseVelocity={-1} clasname="font-light tracking-tight text-luxury-gold">
+            Comienza a duplicar tus ventas ahora mismo •
+          </ScrollingTextBanner>
         </div>
+        {/* --- FIN: BANNER DE TEXTO --- */}
 
         {/* Carrusel Sticky de Imágenes */}
         <div className="relative mb-32">
@@ -193,7 +261,7 @@ const Clients = () => {
           </div>
         </div>
 
-        {/* --- INICIO DE LA NUEVA SECCIÓN DE TESTIMONIOS (CARRUSEL) --- */}
+        {/* Sección de Testimonios (Carrusel) */}
         <div className="mx-auto flex w-full max-w-container flex-col items-center gap-4 text-center sm:gap-16">
           <motion.div
             className="flex flex-col items-center gap-4 px-4 sm:gap-8"
@@ -223,12 +291,10 @@ const Clients = () => {
               </div>
             </div>
 
-            {/* Degradado para que coincida con el fondo 'bg-card' */}
             <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-card sm:block" />
             <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-card sm:block" />
           </motion.div>
         </div>
-        {/* --- FIN DE LA NUEVA SECCIÓN DE TESTIMONIOS --- */}
       </div>
     </section>
   );

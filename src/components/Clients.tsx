@@ -33,7 +33,7 @@ const Clients = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="clientes" ref={ref} className="py-32 bg-card overflow-hidden">
+    <section id="clientes" ref={ref} className="py-32 bg-card">
       <div className="container mx-auto px-6">
         {/* Título */}
         <motion.div

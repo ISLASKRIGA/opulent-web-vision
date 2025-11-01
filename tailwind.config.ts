@@ -83,41 +83,47 @@ export default {
         "fade-in": {
           "0%": {
             opacity: "0",
-            transform: "translateY(20px)"
+            transform: "translateY(20px)",
           },
           "100%": {
             opacity: "1",
-            transform: "translateY(0)"
-          }
+            transform: "translateY(0)",
+          },
         },
         "fade-up": {
           "0%": {
             opacity: "0",
-            transform: "translateY(30px)"
+            transform: "translateY(30px)",
           },
           "100%": {
             opacity: "1",
-            transform: "translateY(0)"
-          }
+            transform: "translateY(0)",
+          },
         },
         "scale-in": {
           "0%": {
             transform: "scale(0.95)",
-            opacity: "0"
+            opacity: "0",
           },
           "100%": {
             transform: "scale(1)",
-            opacity: "1"
-          }
+            opacity: "1",
+          },
         },
-        "glow": {
+        glow: {
           "0%, 100%": {
-            boxShadow: "0 0 20px hsl(43 74% 66% / 0.2)"
+            boxShadow: "0 0 20px hsl(43 74% 66% / 0.2)",
           },
           "50%": {
-            boxShadow: "0 0 40px hsl(43 74% 66% / 0.4)"
-          }
-        }
+            boxShadow: "0 0 40px hsl(43 74% 66% / 0.4)",
+          },
+        },
+        // --- CÓDIGO AÑADIDO ---
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
+        },
+        // --- FIN CÓDIGO AÑADIDO ---
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -125,7 +131,10 @@ export default {
         "fade-in": "fade-in 0.6s ease-out",
         "fade-up": "fade-up 0.8s ease-out",
         "scale-in": "scale-in 0.5s ease-out",
-        "glow": "glow 3s ease-in-out infinite"
+        glow: "glow 3s ease-in-out infinite",
+        // --- CÓDIGO AÑADIDO ---
+        marquee: "marquee var(--duration) linear infinite",
+        // --- FIN CÓDIGO AÑADIDO ---
       },
     },
   },

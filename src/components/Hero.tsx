@@ -50,7 +50,7 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl md:text-2xl text-muted-foreground mb-12 font-light"
           >
-            Diseño digital de élite para emprendedores visionarios
+            Diseño digital de élite para que ae eduquen emprendedores visionarios
           </motion.p>
 
           <motion.div

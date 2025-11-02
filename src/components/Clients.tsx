@@ -189,7 +189,7 @@ const Clients = () => {
         {/* --- INICIO: BANNER DE TEXTO REEMPLAZANDO LOS LOGOS --- */}
         <div className="mb-24">
           <ScrollingTextBanner baseVelocity={-1} clasname="font-light tracking-tight text-luxury-gold">
-            Comienza a duplicar tus ventas ahora mismo •
+            Doble visibilidad. Doble de clientes. Doble de ingresos. Y el doble de tranquilidad •
           </ScrollingTextBanner>
         </div>
         {/* --- FIN: BANNER DE TEXTO --- */}

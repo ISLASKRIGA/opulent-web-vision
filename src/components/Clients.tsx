@@ -183,7 +183,7 @@ const Clients = () => {
           <h2 className="text-4xl md:text-5xl font-light mb-4 tracking-tight">
             Clientes que confían en la <span className="text-luxury-gold">excelencia</span>
           </h2>
-          <p className="text-xl text-muted-foreground font-light">Marcas premium que eligieron WebTomic</p>
+          <p className="text-xl text-muted-foreground font-light">Marcas que eligieron WebTomic</p>
         </motion.div>
 
         {/* --- INICIO: BANNER DE TEXTO REEMPLAZANDO LOS LOGOS --- */}

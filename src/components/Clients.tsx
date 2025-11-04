@@ -1,16 +1,10 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import React, { useRef } from "react";
-// Se eliminaron las importaciones que solo usaba el banner de texto (como useScroll, useSpring, etc.)
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-// --- INICIO: BANNER DE TEXTO ELIMINADO ---
-// Se eliminó toda la definición del componente 'ScrollingTextBanner' de aquí.
-// --- FIN: BANNER DE TEXTO ELIMINADO ---
-
-// --- (Definiciones de TestimonialCard y TestimonialAuthor) ---
 export interface TestimonialAuthor {
   name: string;
   handle: string;
@@ -24,7 +18,6 @@ export interface TestimonialCardProps {
 }
 export const TestimonialCard = React.forwardRef<HTMLDivElement, TestimonialCardProps>(
   ({ text, author, href, className }, ref) => {
-    // ... (Contenido del componente TestimonialCard) ...
     const content = (
       <Card
         ref={ref}
@@ -65,7 +58,6 @@ export const TestimonialCard = React.forwardRef<HTMLDivElement, TestimonialCardP
   },
 );
 TestimonialCard.displayName = "TestimonialCard";
-// --- (Fin de definiciones de Testimonial) ---
 
 const testimonials: Array<{ author: TestimonialAuthor; text: string; href?: string }> = [
   {
@@ -98,7 +90,6 @@ const Clients = () => {
   return (
     <section id="clientes" ref={ref} className="py-32 bg-card">
       <div className="container mx-auto px-6">
-        {/* Título */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -111,14 +102,8 @@ const Clients = () => {
           <p className="text-xl text-muted-foreground font-light">Marcas que eligieron WebTomic</p>
         </motion.div>
 
-        {/* --- INICIO: BANNER DE TEXTO ELIMINADO --- */}
-        {/* Se eliminó el 'div' que contenía el 'ScrollingTextBanner' de aquí. */}
-        {/* --- FIN: BANNER DE TEXTO ELIMINADO --- */}
-
-        {/* Carrusel Sticky de Imágenes */}
         <div className="relative mb-32">
           <div className="grid grid-cols-12 gap-2">
-            {/* Columna izquierda */}
             <div className="grid gap-2 col-span-4">
               {[
                 "https://images.unsplash.com/photo-1718838541476-d04e71caa347?w=500&auto=format&fit=crop",
@@ -137,7 +122,6 @@ const Clients = () => {
               ))}
             </div>
 
-            {/* Columna central sticky */}
             <div className="sticky top-0 h-screen w-full col-span-4 gap-2 grid grid-rows-3">
               {[
                 "https://images.unsplash.com/photo-1718969604981-de826f44ce15?w=500&auto=format&fit=crop",
@@ -161,7 +145,6 @@ const Clients = () => {
               ))}
             </div>
 
-            {/* Columna derecha */}
             <div className="grid gap-2 col-span-4">
               {[
                 "https://images.unsplash.com/photo-1719547907790-f661a88302c2?w=500&auto=format&fit=crop",
@@ -182,7 +165,6 @@ const Clients = () => {
           </div>
         </div>
 
-        {/* Sección de Testimonios (Carrusel) */}
         <div className="mx-auto flex w-full max-w-container flex-col items-center gap-4 text-center sm:gap-16">
           <motion.div
             className="flex flex-col items-center gap-4 px-4 sm:gap-8"
@@ -212,7 +194,7 @@ const Clients = () => {
               </div>
             </div>
 
-            <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-card sm:block" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1im/3 bg-gradient-to-r from-card sm:block" />
             <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-card sm:block" />
           </motion.div>
         </div>

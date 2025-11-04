@@ -153,10 +153,10 @@ const Hero = () => {
               que
             </span>{" "}
             <span className="text-luxury-gold font-normal word" data-delay="1000">
-              definen
+              llenan
             </span>{" "}
             <span className="text-luxury-gold font-normal word" data-delay="1150">
-              grandeza
+              tu mesa
             </span>
           </motion.h1>
 

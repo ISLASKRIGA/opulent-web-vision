@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import logoAtom from "@/assets/LogoAtomStudios_SinFondo.png"; // Importamos el logo en formato PNG
+// Esta línea ya importa el logo PNG sin fondo correcto
+import logoAtom from "@/assets/LogoAtomStudios_SinFondo.png";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -31,19 +32,17 @@ const Header = () => {
     >
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          {/* --- CÓDIGO MODIFICADO --- */}
           <motion.button
             onClick={() => scrollToSection("hero")}
-            className="flex items-center gap-2 transition-luxury" // Añadimos flex para alinear
+            className="flex items-center gap-2 transition-luxury"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            {/* Usamos la imagen del logo */}
+            {/* Aquí se usa la variable 'logoAtom' que carga el PNG */}
             <img src={logoAtom} alt="Logo de Atom Studios" className="h-8 w-auto" />
-            {/* Agregamos el texto "Atom Studios" al lado del logo */}
+            {/* Y aquí está tu título que dijiste que se ve bien */}
             <span className="text-2xl font-bold text-luxury-gold">Atom Studios</span>
           </motion.button>
-          {/* --- FIN CÓDIGO MODIFICADO --- */}
 
           <nav className="hidden md:flex items-center gap-8">
             {["Inicio", "Clientes", "Precios", "Contacto"].map((item, index) => (

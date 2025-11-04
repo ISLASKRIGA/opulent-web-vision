@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import logoAtom from "@/assets/LogoAtomStudios.png"; // Importamos el logo en formato PNG
+import logoAtom from "@/assets/LogoAtomStudios_SinFondo.png"; // Importamos el logo en formato PNG
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);

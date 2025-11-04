@@ -40,8 +40,8 @@ export const TestimonialCard = React.forwardRef<HTMLDivElement, TestimonialCardP
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-normal text-foreground">{author.name}</p>
-              <p className="text-sm text-muted-foreground">{author.handle}</p>
+              <p className="font-semibold text-luxury-gold">{author.name}</p>
+              <p className="text-base text-foreground/80">{author.handle}</p>
             </div>
           </div>
         </CardContent>

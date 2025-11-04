@@ -99,7 +99,7 @@ const Clients = () => {
           <h2 className="text-4xl md:text-5xl font-light mb-4 tracking-tight">
             Clientes que confían en la <span className="text-luxury-gold">excelencia</span>
           </h2>
-          <p className="text-xl text-muted-foreground font-light">Mas de 50 clientes nos prefieren</p>
+          <p className="text-xl text-muted-foreground font-light">Marcas que eligieron WebTomic</p>
         </motion.div>
 
         <div className="relative mb-32">
@@ -167,20 +167,6 @@ const Clients = () => {
 
         <div className="mx-auto flex w-full max-w-container flex-col items-center gap-4 text-center sm:gap-16">
           <motion.div
-            className="flex flex-col items-center gap-4 px-4 sm:gap-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="max-w-[720px] text-3xl font-semibold leading-tight sm:text-5xl sm:leading-tight">
-              Clientes que confían en la <span className="text-luxury-gold">excelencia</span>
-            </h2>
-            <p className="text-md max-w-[600px] font-medium text-muted-foreground sm:text-xl">
-              Marcas premium que eligieron WebTomic
-            </p>
-          </motion.div>
-
-          <motion.div
             className="relative flex w-full flex-col items-center justify-center overflow-hidden"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
@@ -188,14 +174,14 @@ const Clients = () => {
           >
             <div className="group flex overflow-hidden p-2 [--gap:1rem] [gap:var(--gap)] flex-row [--duration:40s]">
               <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]">
-                {[...Array(4)].map((_, setIndex) =>
+                {[...Array(6)].map((_, setIndex) =>
                   testimonials.map((testimonial, i) => <TestimonialCard key={`${setIndex}-${i}`} {...testimonial} />),
                 )}
               </div>
             </div>
 
-            <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1im/3 bg-gradient-to-r from-card sm:block" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-card sm:block" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-card sm:block" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1im/3 bg-gradient-to-l from-card sm:block" />
           </motion.div>
         </div>
       </div>

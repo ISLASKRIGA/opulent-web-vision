@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import logoAtom from "@/assets/LogoAtomStudios.jpg"; // Importamos el logo
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -30,14 +31,17 @@ const Header = () => {
     >
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
+          {/* --- CÓDIGO MODIFICADO --- */}
           <motion.button
             onClick={() => scrollToSection("hero")}
-            className="text-2xl font-light tracking-wider text-foreground hover:text-luxury-gold transition-luxury"
+            className="transition-luxury" // Quitamos las clases de texto
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            WebTomic
+            {/* Usamos la imagen del logo en lugar del texto */}
+            <img src={logoAtom} alt="Logo de Atom Studios" className="h-8 w-auto" />
           </motion.button>
+          {/* --- FIN CÓDIGO MODIFICADO --- */}
 
           <nav className="hidden md:flex items-center gap-8">
             {["Inicio", "Clientes", "Precios", "Contacto"].map((item, index) => (

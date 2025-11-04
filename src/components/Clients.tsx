@@ -174,14 +174,24 @@ const Clients = () => {
           >
             <div className="group flex overflow-hidden p-2 [--gap:1rem] [gap:var(--gap)] flex-row [--duration:40s]">
               <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]">
-                {[...Array(6)].map((_, setIndex) =>
+                {[...Array(4)].map((_, setIndex) =>
                   testimonials.map((testimonial, i) => <TestimonialCard key={`${setIndex}-${i}`} {...testimonial} />),
+                )}
+              </div>
+              <div
+                className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]"
+                aria-hidden="true"
+              >
+                {[...Array(4)].map((_, setIndex) =>
+                  testimonials.map((testimonial, i) => (
+                    <TestimonialCard key={`${setIndex}-dup-${i}`} {...testimonial} />
+                  )),
                 )}
               </div>
             </div>
 
             <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-card sm:block" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1im/3 bg-gradient-to-l from-card sm:block" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/im/3 bg-gradient-to-l from-card sm:block" />
           </motion.div>
         </div>
       </div>

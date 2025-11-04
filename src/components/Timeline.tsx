@@ -34,7 +34,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           Descubre como impulsar tu negocio en 4 sencillos pasos
         </h2>
         <p className="text-muted-foreground text-sm md:text-base max-w-sm">
-          Creemos en la simplicidad y los resultados. Descubre el método que transforma tu visión en una presencia
+          Creemos en la simplicidad y los resultados. Este es el método que transforma tu visión en una presencia
           digital rentable.
         </p>
       </div>

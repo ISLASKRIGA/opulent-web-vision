@@ -168,28 +168,28 @@ const Hero = () => {
             className="text-xl md:text-2xl text-muted-foreground mb-12 font-light"
           >
             <span className="word" data-delay="1300">
-              Integramos
+              Tu presencia
             </span>{" "}
             <span className="word" data-delay="1450">
-              marketing,
+              digital rentable:
             </span>{" "}
             <span className="word" data-delay="1600">
-              automatización
+              optimizada
             </span>{" "}
             <span className="word" data-delay="1750">
-              y
+              rápida
             </span>{" "}
             <span className="word" data-delay="1900">
-              tecnología
+              y lista para
             </span>{" "}
             <span className="word" data-delay="2050">
-              con
+              recibir
             </span>{" "}
             <span className="word" data-delay="2200">
-              resultados
+              clientes
             </span>{" "}
             <span className="word" data-delay="2350">
-              visibles
+              .
             </span>
           </motion.p>
           {/* --- FIN CÓDIGO MODIFICADO --- */}

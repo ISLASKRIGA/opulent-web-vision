@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import logoAtom from "@/assets/LogoAtomStudios.png"; // Importamos el logo
+import logoAtom from "@/assets/LogoAtomStudios.png"; // Importamos el logo en formato PNG
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -34,12 +34,14 @@ const Header = () => {
           {/* --- CÓDIGO MODIFICADO --- */}
           <motion.button
             onClick={() => scrollToSection("hero")}
-            className="transition-luxury" // Quitamos las clases de texto
+            className="flex items-center gap-2 transition-luxury" // Añadimos flex para alinear
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            {/* Usamos la imagen del logo en lugar del texto */}
+            {/* Usamos la imagen del logo */}
             <img src={logoAtom} alt="Logo de Atom Studios" className="h-8 w-auto" />
+            {/* Agregamos el texto "Atom Studios" al lado del logo */}
+            <span className="text-2xl font-bold text-luxury-gold">Atom Studios</span>
           </motion.button>
           {/* --- FIN CÓDIGO MODIFICADO --- */}
 

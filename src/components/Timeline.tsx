@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 interface TimelineEntry {
   title: string;
   content: React.ReactNode;
+  imageUrl: string;
 }
 
 export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
@@ -30,12 +31,9 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   return (
     <div className="w-full bg-background font-sans md:px-10" ref={containerRef}>
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
-        <h2 className="text-lg md:text-4xl mb-4 text-foreground max-w-4xl">
-          Descubre como impulsar tu negocio en 4 sencillos pasos
-        </h2>
-        <p className="text-muted-foreground text-sm md:text-base max-w-sm">
-          Creemos en la simplicidad y los resultados. Este es el método que transforma tu visión en una presencia
-          digital rentable.
+        <h2 className="text-3xl md:text-5xl mb-4 text-foreground font-semibold max-w-4xl">Nuestro Proceso de Éxito</h2>
+        <p className="text-muted-foreground text-lg md:text-xl max-w-sm">
+          Cada proyecto prémium sigue un camino meticulosamente planificado, desde la visión hasta la realidad.
         </p>
       </div>
 
@@ -52,8 +50,13 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
             </div>
 
             <div className="relative pl-24 pr-4 md:pl-8 w-full">
-              <h3 className="md:hidden block text-2xl mb-4 text-left font-bold text-muted-foreground">{item.title}</h3>
-              {item.content}{" "}
+              <h3 className="md:hidden block text-3xl mb-4 text-left font-bold text-muted-foreground">{item.title}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>{item.content}</div>
+                <div className="hidden md:block">
+                  <img src={item.imageUrl} alt={item.title} className="w-full h-64 object-cover rounded-lg shadow-lg" />
+                </div>
+              </div>
             </div>
           </div>
         ))}

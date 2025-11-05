@@ -237,12 +237,6 @@ const WovenLightSection = () => {
         >
           Programamos a medida para que tu sitio web sea tan rápido y fluido como esta animación.
         </motion.p>
-        <motion.div initial={{ opacity: 0 }} animate={buttonControls} className="mt-10">
-          <button
-            className="rounded-full border-2 border-white/20 bg-white/10 px-8 py-3 font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/20 dark:border-slate-800/20 dark:bg-slate-800/5 dark:text-slate-800 dark:hover:bg-slate-800/10"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          ></button>
-        </motion.div>
       </div>
     </div>
   );

@@ -29,18 +29,13 @@ const WovenCanvas = () => {
   useEffect(() => {
     if (!mountRef.current) return;
 
-    // Ajustamos el tamaño al del contenedor, no al de la ventana
-    const container = mountRef.current;
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 5;
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(width, height);
+    renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    container.appendChild(renderer.domElement);
+    mountRef.current.appendChild(renderer.domElement);
 
     const mouse = new THREE.Vector2(0, 0);
     const clock = new THREE.Clock();
@@ -95,14 +90,11 @@ const WovenCanvas = () => {
     const points = new THREE.Points(geometry, material);
     scene.add(points);
 
-    // Corregimos el event listener para que solo escuche el mouse sobre el contenedor
     const handleMouseMove = (event: MouseEvent) => {
-      if (!container) return;
-      const rect = container.getBoundingClientRect();
-        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     };
-    container.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove);
 
     const animate = () => {
         requestAnimationFrame(animate);
@@ -149,32 +141,28 @@ const WovenCanvas = () => {
     animate();
 
     const handleResize = () => {
-      if (!container) return;
-      const width = container.clientWidth;
-      const height = container.clientHeight;
-        camera.aspect = width / height;
+        camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(width, height);
+        renderer.setSize(window.innerWidth, window.innerHeight);
     };
     window.addEventListener('resize', handleResize);
 
     return () => {
         window.removeEventListener('resize', handleResize);
-        container?.removeEventListener('mousemove', handleMouseMove);
-        container?.removeChild(renderer.domElement);
-      // Limpieza de Three.js
-      geometry.dispose();
-      material.dispose();
-      torusKnot.dispose();
-      renderer.dispose();
+        window.removeEventListener('mousemove', handleMouseMove);
+        mountRef.current?.removeChild(renderer.domElement);
+        // Limpieza de Three.js
+        geometry.dispose();
+        material.dispose();
+        torusKnot.dispose();
+        renderer.dispose();
     };
   }, []);
 
-  // Cambiamos 'absolute' por 'relative' y le damos una altura
-  return <div ref={mountRef} className="relative z-0 w-full h-full" />;
+  return <div ref={mountRef} className="absolute inset-0 z-0" />;
 };
 
-// --- Main Hero Component (Renombrado a "WovenLightSection") ---
+// --- Main Hero Component ---
 const WovenLightSection = () => {
   const textControls = useAnimation();
   const buttonControls = useAnimation();
@@ -208,12 +196,11 @@ const WovenLightSection = () => {
   const headline = "Woven by Light";
   
   return (
-    // Ajustado para ser una sección, no una pantalla completa
-    <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden bg-black dark:bg-white">
+    <div className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden bg-background">
       <WovenCanvas />
       <HeroNav />
       <div className="relative z-10 text-center px-4">
-        <h1 className="text-6xl md:text-8xl text-white dark:text-slate-900" style={{ fontFamily: "'Playfair Display', serif", textShadow: '0 0 50px rgba(255, 255, 255, 0.3)' }}>
+        <h1 className="text-6xl md:text-8xl text-foreground" style={{ fontFamily: "'Playfair Display', serif", textShadow: '0 0 50px rgba(255, 255, 255, 0.3)' }}>
             {headline.split(" ").map((word, i) => (
                 <span key={i} className="inline-block">
                     {word.split("").map((char, j) => (
@@ -229,13 +216,13 @@ const WovenLightSection = () => {
           custom={headline.length}
           initial={{ opacity: 0, y: 30 }}
           animate={textControls}
-          className="mx-auto mt-6 max-w-xl text-lg text-slate-300 dark:text-slate-600"
+          className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           An interactive tapestry of light and motion, crafted with code and creativity.
         </motion.p>
         <motion.div initial={{ opacity: 0 }} animate={buttonControls} className="mt-10">
-          <button className="rounded-full border-2 border-white/20 bg-white/10 px-8 py-3 font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/20 dark:border-slate-800/20 dark:bg-slate-800/5 dark:text-slate-800 dark:hover:bg-slate-800/10" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <button className="rounded-full border-2 border-primary/20 bg-primary/10 px-8 py-3 font-semibold text-foreground backdrop-blur-sm transition-all hover:bg-primary/20" style={{ fontFamily: "'Inter', sans-serif" }}>
             Explore the Weave
           </button>
         </motion.div>

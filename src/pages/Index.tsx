@@ -18,7 +18,6 @@ const Index = () => {
         <Clients />
         <Timeline data={timelineData} />
         <Pricing />
-        {/* Tu componente de animación está ahora como fondo de toda la página */}
         <Contact />
       </main>
       <Footer />

@@ -7,24 +7,28 @@ import * as THREE from "three";
 // --- Three.js Canvas Component ---
 const WovenCanvas = () => {
   const mountRef = useRef<HTMLDivElement>(null);
+  const animationFrameRef = useRef<number>(0); // Para limpiar el bucle de animación
 
   useEffect(() => {
     if (!mountRef.current) return;
 
+    const container = mountRef.current;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     camera.position.z = 5;
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
-    mountRef.current.appendChild(renderer.domElement);
+    container.appendChild(renderer.domElement);
 
     const mouse = new THREE.Vector2(0, 0);
     const clock = new THREE.Clock();
 
     const isDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-    // --- Woven Silk ---
     const particleCount = 50000;
     const positions = new Float32Array(particleCount * 3);
     const originalPositions = new Float32Array(particleCount * 3);
@@ -39,7 +43,6 @@ const WovenCanvas = () => {
       const x = torusKnot.attributes.position.getX(vertexIndex);
       const y = torusKnot.attributes.position.getY(vertexIndex);
       const z = torusKnot.attributes.position.getZ(vertexIndex);
-
       positions[i * 3] = x;
       positions[i * 3 + 1] = y;
       positions[i * 3 + 2] = z;
@@ -52,7 +55,6 @@ const WovenCanvas = () => {
       colors[i * 3] = color.r;
       colors[i * 3 + 1] = color.g;
       colors[i * 3 + 2] = color.b;
-
       velocities[i * 3] = 0;
       velocities[i * 3 + 1] = 0;
       velocities[i * 3 + 2] = 0;
@@ -73,16 +75,16 @@ const WovenCanvas = () => {
     scene.add(points);
 
     const handleMouseMove = (event: MouseEvent) => {
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      if (!container) return;
+      const rect = container.getBoundingClientRect();
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
     };
-    window.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mousemove", handleMouseMove);
 
-    let animationFrame: number;
     const animate = () => {
-      animationFrame = requestAnimationFrame(animate);
+      animationFrameRef.current = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
-
       const mouseWorld = new THREE.Vector3(mouse.x * 3, mouse.y * 3, 0);
 
       for (let i = 0; i < particleCount; i++) {
@@ -99,19 +101,15 @@ const WovenCanvas = () => {
           const force = (1.5 - dist) * 0.01;
           const direction = new THREE.Vector3().subVectors(currentPos, mouseWorld).normalize();
           velocity.add(direction.multiplyScalar(force));
-        }
+        } // Return to original position
 
-        // Return to original position
         const returnForce = new THREE.Vector3().subVectors(originalPos, currentPos).multiplyScalar(0.001);
-        velocity.add(returnForce);
-
-        // Damping
+        velocity.add(returnForce); // Damping
         velocity.multiplyScalar(0.95);
 
         positions[ix] += velocity.x;
         positions[iy] += velocity.y;
         positions[iz] += velocity.z;
-
         velocities[ix] = velocity.x;
         velocities[iy] = velocity.y;
         velocities[iz] = velocity.z;
@@ -124,18 +122,21 @@ const WovenCanvas = () => {
     animate();
 
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+      if (!container) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      camera.aspect = width / height;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(width, height);
     };
     window.addEventListener("resize", handleResize);
 
     return () => {
-      cancelAnimationFrame(animationFrame);
+      cancelAnimationFrame(animationFrameRef.current);
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement);
+      container?.removeEventListener("mousemove", handleMouseMove);
+      if (container && renderer.domElement) {
+        container.removeChild(renderer.domElement);
       }
       geometry.dispose();
       material.dispose();
@@ -147,36 +148,12 @@ const WovenCanvas = () => {
   return <div ref={mountRef} className="absolute inset-0 z-0" />;
 };
 
-// --- Navigation Component ---
-const HeroNav = () => {
-  return (
-    <motion.nav
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1, transition: { delay: 1, duration: 1 } }}
-      className="absolute top-0 left-0 right-0 z-20 p-6"
-    >
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-white dark:text-slate-800">⎎</span>
-          <span
-            className="text-xl font-bold text-white dark:text-slate-800"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            Woven
-          </span>
-        </div>
-      </div>
-    </motion.nav>
-  );
-};
-
-// --- Main Hero Component ---
+// --- Main Hero Component (Renombrado a "WovenLightSection") ---
 const WovenLightSection = () => {
   const textControls = useAnimation();
   const buttonControls = useAnimation();
 
   useEffect(() => {
-    // Add a more elegant font
     const link = document.createElement("link");
     link.href = "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400&display=swap";
     link.rel = "stylesheet";
@@ -201,19 +178,20 @@ const WovenLightSection = () => {
     };
   }, [textControls, buttonControls]);
 
-  const headline = "Código Real, Resultados Reales.";
-
+  const headline = "Woven by Light";
   return (
-    <div className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden bg-black dark:bg-white">
-      <WovenCanvas />
-      <HeroNav />
+    <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden bg-black dark:bg-white">
+            <WovenCanvas />     {" "}
       <div className="relative z-10 text-center px-4">
+               {" "}
         <h1
           className="text-6xl md:text-8xl text-white dark:text-slate-900"
           style={{ fontFamily: "'Playfair Display', serif", textShadow: "0 0 50px rgba(255, 255, 255, 0.3)" }}
         >
+                     {" "}
           {headline.split(" ").map((word, i) => (
             <span key={i} className="inline-block">
+                                 {" "}
               {word.split("").map((char, j) => (
                 <motion.span
                   key={j}
@@ -222,13 +200,16 @@ const WovenLightSection = () => {
                   animate={textControls}
                   style={{ display: "inline-block" }}
                 >
-                  {char}
+                  á                           {char}                       {" "}
                 </motion.span>
               ))}
-              {i < headline.split(" ").length - 1 && <span>&nbsp;</span>}
+                                  {i < headline.split(" ").length - 1 && <span>&nbsp;</span>}
+              TA            {" "}
             </span>
           ))}
+                 {" "}
         </h1>
+               {" "}
         <motion.p
           custom={headline.length}
           initial={{ opacity: 0, y: 30 }}
@@ -236,15 +217,22 @@ const WovenLightSection = () => {
           className="mx-auto mt-6 max-w-xl text-lg text-slate-300 dark:text-slate-600"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          Programamos a medida para que tu sitio web sea tan rápido y fluido como esta animación.
+                    An interactive tapestry of light and motion, crafted with code and creativity.        {" "}
         </motion.p>
+               {" "}
         <motion.div initial={{ opacity: 0 }} animate={buttonControls} className="mt-10">
+                   {" "}
           <button
             className="rounded-full border-2 border-white/20 bg-white/10 px-8 py-3 font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/20 dark:border-slate-800/20 dark:bg-slate-800/5 dark:text-slate-800 dark:hover:bg-slate-800/10"
             style={{ fontFamily: "'Inter', sans-serif" }}
-          ></button>
+          >
+                        Explore the Weave          {" "}
+          </button>
+                 {" "}
         </motion.div>
+             {" "}
       </div>
+         {" "}
     </div>
   );
 };

@@ -33,12 +33,14 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <motion.button
             onClick={() => scrollToSection("hero")}
-            className="flex items-center gap-2 transition-luxury"
+            className="flex items-center gap-2 transition-luxury group"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <img src={logoAtom} alt="Logo de Atom Studios" className="h-8 w-auto" />
-            <span className="text-2xl font-bold text-luxury-gold">Atom Studios</span>
+            <span className="text-2xl font-bold text-foreground group-hover:text-luxury-gold transition-luxury">
+              Atom Studios
+            </span>
           </motion.button>
 
           <nav className="hidden md:flex items-center gap-8">

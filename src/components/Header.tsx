@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-// Esta línea ya importa el logo PNG sin fondo correcto
-import logoAtom from "@/assets/LogoAtomStudios_SinFondo.png";
+// La línea que importaba 'logoAtom' ha sido eliminada.
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -38,9 +37,7 @@ const Header = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            {/* Aquí se usa la variable 'logoAtom' que carga el PNG */}
-            <img src={logoAtom} alt="Logo de Atom Studios" className="h-8 w-auto" />
-            {/* Y aquí está tu título que dijiste que se ve bien */}
+            {/* La etiqueta <img> que mostraba el logo ha sido eliminada. */}
             <span className="text-2xl font-bold text-luxury-gold">Atom Studios</span>
           </motion.button>
 

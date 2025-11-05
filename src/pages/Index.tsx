@@ -4,20 +4,30 @@ import Clients from "@/components/Clients";
 import { Timeline } from "@/components/Timeline";
 import { timelineData } from "@/components/TimelineData";
 import Pricing from "@/components/Pricing";
-import WarpDriveShader from "@/components/WarpDriveShader"; // <-- LÍNEA AÑADIDA
+import { SplineScene } from "@/components/SplineScene"; // <-- LÍNEA MODIFICADA
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
+      {/* El componente <WarpDriveShader /> se ha eliminado */}
       <Header />
       <main>
         <Hero />
         <Clients />
         <Timeline data={timelineData} />
         <Pricing />
-        <WarpDriveShader />
+
+        {/* --- SECCIÓN DE SPLINE AÑADIDA --- */}
+        <section id="spline-animation" className="h-[500px] w-full">
+          {/* ¡IMPORTANTE! 
+            CAMBIA LA URL de "scene" por la URL de tu propia escena de Spline.
+          */}
+          <SplineScene scene="https://prod.spline.design/T-A2R1-m6A-pl3-a/scene.splinecode" className="w-full h-full" />
+        </section>
+        {/* --- FIN DE LA SECCIÓN DE SPLINE --- */}
+
         <Contact />
       </main>
       <Footer />

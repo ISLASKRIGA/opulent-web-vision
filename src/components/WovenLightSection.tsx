@@ -4,231 +4,231 @@ import React, { useRef, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import * as THREE from 'three';
 
-// --- Navigation Component ---
-const HeroNav = () => {
-    return (
-        <motion.nav 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { delay: 1, duration: 1 } }}
-            className="absolute top-0 left-0 right-0 z-20 p-6"
-        >
-            <div className="max-w-7xl mx-auto flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                    <span className="text-2xl font-bold text-white dark:text-slate-800">⎎</span>
-                    <span className="text-xl font-bold text-white dark:text-slate-800" style={{ fontFamily: "'Inter', sans-serif" }}>Woven</span>
-                </div>
-            </div>
-        </motion.nav>
-    );
-};
+// --- El componente 'HeroNav' ha sido eliminado ---
 
 // --- Three.js Canvas Component ---
 const WovenCanvas = () => {
-  const mountRef = useRef<HTMLDivElement>(null);
+  const mountRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!mountRef.current) return;
+  useEffect(() => {
+    if (!mountRef.current) return;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    mountRef.current.appendChild(renderer.domElement);
+    // Ajustamos el tamaño al del contenedor, no al de la ventana
+    const container = mountRef.current;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
 
-    const mouse = new THREE.Vector2(0, 0);
-    const clock = new THREE.Clock();
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    camera.position.z = 5;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
 
-    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const mouse = new THREE.Vector2(0, 0);
+    const clock = new THREE.Clock();
 
-    // --- Woven Silk ---
-    const particleCount = 50000;
-    const positions = new Float32Array(particleCount * 3);
-    const originalPositions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-    const velocities = new Float32Array(particleCount * 3);
+    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    const geometry = new THREE.BufferGeometry();
-    const torusKnot = new THREE.TorusKnotGeometry(1.5, 0.5, 200, 32);
+    // --- Woven Silk ---
+    const particleCount = 50000;
+    const positions = new Float32Array(particleCount * 3);
+    const originalPositions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+    const velocities = new Float32Array(particleCount * 3);
 
-    for (let i = 0; i < particleCount; i++) {
-        const vertexIndex = i % torusKnot.attributes.position.count;
-        const x = torusKnot.attributes.position.getX(vertexIndex);
-        const y = torusKnot.attributes.position.getY(vertexIndex);
-        const z = torusKnot.attributes.position.getZ(vertexIndex);
-        
-        positions[i * 3] = x;
-        positions[i * 3 + 1] = y;
-        positions[i * 3 + 2] = z;
-        originalPositions[i * 3] = x;
-        originalPositions[i * 3 + 1] = y;
-        originalPositions[i * 3 + 2] = z;
+    const geometry = new THREE.BufferGeometry();
+    const torusKnot = new THREE.TorusKnotGeometry(1.5, 0.5, 200, 32);
 
-        const color = new THREE.Color();
-        color.setHSL(Math.random(), 0.8, isDarkMode ? 0.5 : 0.7);
-        colors[i * 3] = color.r;
-        colors[i * 3 + 1] = color.g;
-        colors[i * 3 + 2] = color.b;
-        
-        velocities[i * 3] = 0;
-        velocities[i * 3 + 1] = 0;
-        velocities[i * 3 + 2] = 0;
-    }
+    for (let i = 0; i < particleCount; i++) {
+        const vertexIndex = i % torusKnot.attributes.position.count;
+        const x = torusKnot.attributes.position.getX(vertexIndex);
+        const y = torusKnot.attributes.position.getY(vertexIndex);
+        const z = torusKnot.attributes.position.getZ(vertexIndex);
+        
+        positions[i * 3] = x;
+        positions[i * 3 + 1] = y;
+        positions[i * 3 + 2] = z;
+        originalPositions[i * 3] = x;
+        originalPositions[i * 3 + 1] = y;
+        originalPositions[i * 3 + 2] = z;
 
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        const color = new THREE.Color();
+        color.setHSL(Math.random(), 0.8, isDarkMode ? 0.5 : 0.7);
+        colors[i * 3] = color.r;
+        colors[i * 3 + 1] = color.g;
+        colors[i * 3 + 2] = color.b;
+        
+        velocities[i * 3] = 0;
+        velocities[i * 3 + 1] = 0;
+        velocities[i * 3 + 2] = 0;
+    }
 
-    const material = new THREE.PointsMaterial({
-        size: 0.02,
-        vertexColors: true,
-        blending: isDarkMode ? THREE.NormalBlending : THREE.AdditiveBlending,
-        transparent: true,
-        opacity: isDarkMode ? 1.0 : 0.8,
-    });
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-    const points = new THREE.Points(geometry, material);
-    scene.add(points);
+    const material = new THREE.PointsMaterial({
+        size: 0.02,
+        vertexColors: true,
+        blending: isDarkMode ? THREE.NormalBlending : THREE.AdditiveBlending,
+        transparent: true,
+        opacity: isDarkMode ? 1.0 : 0.8,
+    });
 
-    const handleMouseMove = (event: MouseEvent) => {
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    };
-    window.addEventListener('mousemove', handleMouseMove);
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
 
-    const animate = () => {
-        requestAnimationFrame(animate);
-        const elapsedTime = clock.getElapsedTime();
-        
-        const mouseWorld = new THREE.Vector3(mouse.x * 3, mouse.y * 3, 0);
+    // Corregimos el event listener para que solo escuche el mouse sobre el contenedor
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!container) return;
+      const rect = container.getBoundingClientRect();
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    };
+    container.addEventListener('mousemove', handleMouseMove);
 
-        for (let i = 0; i < particleCount; i++) {
-            const ix = i * 3;
-            const iy = i * 3 + 1;
-            const iz = i * 3 + 2;
+    const animate = () => {
+        const animationFrame = requestAnimationFrame(animate);
+        const elapsedTime = clock.getElapsedTime();
+        
+        const mouseWorld = new THREE.Vector3(mouse.x * 3, mouse.y * 3, 0);
 
-            const currentPos = new THREE.Vector3(positions[ix], positions[iy], positions[iz]);
-            const originalPos = new THREE.Vector3(originalPositions[ix], originalPositions[iy], originalPositions[iz]);
-            const velocity = new THREE.Vector3(velocities[ix], velocities[iy], velocities[iz]);
+        for (let i = 0; i < particleCount; i++) {
+            const ix = i * 3;
+            const iy = i * 3 + 1;
+            const iz = i * 3 + 2;
 
-            const dist = currentPos.distanceTo(mouseWorld);
-            if (dist < 1.5) {
-                const force = (1.5 - dist) * 0.01;
-                const direction = new THREE.Vector3().subVectors(currentPos, mouseWorld).normalize();
-                velocity.add(direction.multiplyScalar(force));
-            }
+            const currentPos = new THREE.Vector3(positions[ix], positions[iy], positions[iz]);
+            const originalPos = new THREE.Vector3(originalPositions[ix], originalPositions[iy], originalPositions[iz]);
+            const velocity = new THREE.Vector3(velocities[ix], velocities[iy], velocities[iz]);
 
-            // Return to original position
-            const returnForce = new THREE.Vector3().subVectors(originalPos, currentPos).multiplyScalar(0.001);
-            velocity.add(returnForce);
-            
-            // Damping
-            velocity.multiplyScalar(0.95);
+            const dist = currentPos.distanceTo(mouseWorld);
+            if (dist < 1.5) {
+                const force = (1.5 - dist) * 0.01;
+                const direction = new THREE.Vector3().subVectors(currentPos, mouseWorld).normalize();
+                velocity.add(direction.multiplyScalar(force));
+            }
 
-            positions[ix] += velocity.x;
-            positions[iy] += velocity.y;
-            positions[iz] += velocity.z;
-            
-            velocities[ix] = velocity.x;
-            velocities[iy] = velocity.y;
-            velocities[iz] = velocity.z;
-        }
-        geometry.attributes.position.needsUpdate = true;
+            // Return to original position
+            const returnForce = new THREE.Vector3().subVectors(originalPos, currentPos).multiplyScalar(0.001);
+            velocity.add(returnForce);
+            
+            // Damping
+            velocity.multiplyScalar(0.95);
 
-        points.rotation.y = elapsedTime * 0.05;
-        renderer.render(scene, camera);
-    };
-    animate();
+            positions[ix] += velocity.x;
+            positions[iy] += velocity.y;
+  t         positions[iz] += velocity.z;
+            
+            velocities[ix] = velocity.x;
+            velocities[iy] = velocity.y;
+            velocities[iz] = velocity.z;
+Z       }
+        geometry.attributes.position.needsUpdate = true;
 
-    const handleResize = () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-    window.addEventListener('resize', handleResize);
+        points.rotation.y = elapsedTime * 0.05;
+        renderer.render(scene, camera);
+    };
+    animate();
 
-    return () => {
-        window.removeEventListener('resize', handleResize);
-        window.removeEventListener('mousemove', handleMouseMove);
-        mountRef.current?.removeChild(renderer.domElement);
-        // Limpieza de Three.js
-        geometry.dispose();
-        material.dispose();
-        torusKnot.dispose();
-        renderer.dispose();
-    };
-  }, []);
+    const handleResize = () => {
+      if (!container) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+    };
+    window.addEventListener('resize', handleResize);
 
-  return <div ref={mountRef} className="absolute inset-0 z-0" />;
-};
-
-// --- Main Hero Component ---
-const WovenLightSection = () => {
-  const textControls = useAnimation();
-  const buttonControls = useAnimation();
-
-  useEffect(() => {
-    // Add a more elegant font
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400&display=swap';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-
-    textControls.start(i => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.1 + 1.5,
-        duration: 1.2,
-        ease: [0.2, 0.65, 0.3, 0.9]
+    return () => {
+      cancelAnimationFrame(animationFrame); // Limpia el bucle de animación
+        window.removeEventListener('resize', handleResize);
+        container?.removeEventListener('mousemove', handleMouseMove);
+      if (container && renderer.domElement) {
+        container.removeChild(renderer.domElement);
       }
-    }));
-    buttonControls.start({
-        opacity: 1,
-        transition: { delay: 2.5, duration: 1 }
-    });
+      // Limpieza de Three.js
+      geometry.dispose();
+      material.dispose();
+      torusKnot.dispose();
+      renderer.dispose();
+    };
+  }, []);
 
-    return () => {
-        document.head.removeChild(link);
-    }
-  }, [textControls, buttonControls]);
-
-  const headline = "Woven by Light";
-  
-  return (
-    <div className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden bg-background">
-      <WovenCanvas />
-      <HeroNav />
-      <div className="relative z-10 text-center px-4">
-        <h1 className="text-6xl md:text-8xl text-foreground" style={{ fontFamily: "'Playfair Display', serif", textShadow: '0 0 50px rgba(255, 255, 255, 0.3)' }}>
-            {headline.split(" ").map((word, i) => (
-                <span key={i} className="inline-block">
-                    {word.split("").map((char, j) => (
-                        <motion.span key={j} custom={i * 5 + j} initial={{ opacity: 0, y: 50 }} animate={textControls} style={{ display: 'inline-block' }}>
-                            {char}
-                        </motion.span>
-                    ))}
-                    {i < headline.split(" ").length - 1 && <span>&nbsp;</span>}
-                </span>
-            ))}
-        </h1>
-        <motion.p
-          custom={headline.length}
-          initial={{ opacity: 0, y: 30 }}
-          animate={textControls}
-          className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground"
-          style={{ fontFamily: "'Inter', sans-serif" }}
-        >
-          An interactive tapestry of light and motion, crafted with code and creativity.
-        </motion.p>
-        <motion.div initial={{ opacity: 0 }} animate={buttonControls} className="mt-10">
-          <button className="rounded-full border-2 border-primary/20 bg-primary/10 px-8 py-3 font-semibold text-foreground backdrop-blur-sm transition-all hover:bg-primary/20" style={{ fontFamily: "'Inter', sans-serif" }}>
-            Explore the Weave
-          </button>
-        </motion.div>
-      </div>
-    </div>
-  );
+  // Cambiamos 'absolute' por 'relative' y le damos una altura
+  return <div ref={mountRef} className="absolute inset-0 z-0" />;
 };
 
-export default WovenLightSection;
+// --- Main Hero Component (Renombrado a "WovenLightSection") ---
+const WovenLightSection = () => {
+  const textControls = useAnimation();
+  const buttonControls = useAnimation();
+
+  useEffect(() => {
+    // Add a more elegant font
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+
+    textControls.start(i => ({
+      opacity: 1,
+  a     y: 0,
+      transition: {
+        delay: i * 0.1 + 1.5,
+        duration: 1.2,
+        ease: [0.2, 0.65, 0.3, 0.9]
+      }
+    }));
+    buttonControls.start({
+        opacity: 1,
+        transition: { delay: 2.5, duration: 1 }
+    });
+
+    return () => {
+        document.head.removeChild(link);
+    }
+  }, [textControls, buttonControls]);
+
+  const headline = "Woven by Light";
+  
+  return (
+    // Ajustado para ser una sección, no una pantalla completa
+    <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden bg-black dark:bg-white">
+      <WovenCanvas />
+      {/* --- La línea <HeroNav /> ha sido eliminada --- */}
+      <div className="relative z-10 text-center px-4">
+        <h1 className="text-6xl md:text-8xl text-white dark:text-slate-900" style={{ fontFamily: "'Playfair Display', serif", textShadow: '0 0 50px rgba(255, 255, 255, 0.3)' }}>
+            {headline.split(" ").map((word, i) => (
+                <span key={i} className="inline-block">
+                    {word.split("").map((char, j) => (
+                        <motion.span key={j} custom={i * 5 + j} initial={{ opacity: 0, y: 50 }} animate={textControls} style={{ display: 'inline-block' }}>
+                            {char}
+                        </motion.span>
+                    ))}
+                    {i < headline.split(" ").length - 1 && <span>&nbsp;</span>}
+                </span>
+            ))}
+        </h1>
+        <motion.p
+          custom={headline.length}
+          initial={{ opacity: 0, y: 30 }}
+          animate={textControls}
+          className="mx-auto mt-6 max-w-xl text-lg text-slate-300 dark:text-slate-600"
+t         style={{ fontFamily: "'Inter', sans-serif" }}
+        >
+          An interactive tapestry of light and motion, crafted with code and creativity.
+        </motion.p>
+        <motion.div initial={{ opacity: 0 }} animate={buttonControls} className="mt-10">
+          <button className="rounded-full border-2 border-white/20 bg-white/10 px-8 py-3 font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/20 dark:border-slate-800/20 dark:bg-slate-800/5 dark:text-slate-800 dark:hover:bg-slate-800/10" style={{ fontFamily: "'Inter', sans-serif" }}>
+            Explore the Weave
+          </button>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+export default WovenLightSection; // Export por defecto

@@ -54,7 +54,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground; /* <-- LÍNEA CORREGIDA (devolvimos el bg-background) */
+    @apply bg-background text-foreground; /* <-- Aquí devolvimos el fondo */
     font-feature-settings:
       "rlig" 1,
       "calt" 1;

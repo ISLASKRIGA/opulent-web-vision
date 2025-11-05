@@ -2,12 +2,11 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 const WarpDriveShader = () => {
-  // Agregamos <HTMLDivElement> para que TypeScript sepa qué tipo de elemento es
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return; // 1) Renderer + Scene + Camera + Clock
+    if (!container) return;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -15,45 +14,52 @@ const WarpDriveShader = () => {
 
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const clock = new THREE.Clock(); // 2) GLSL Shaders
+    const clock = new THREE.Clock();
 
     const vertexShader = `
-      void main() {
-        gl_Position = vec4(position, 1.0);
-      }
-    `;
+      void main() {
+        gl_Position = vec4(position, 1.0);
+      }
+    `;
 
     const fragmentShader = `
-      precision highp float;
-      uniform vec2 iResolution;
-      uniform float iTime;
-      uniform vec2 iMouse;
+      precision highp float;
+      uniform vec2 iResolution;
+      uniform float iTime;
+      uniform vec2 iMouse;
 
-      void main() {
-        // Normalize to center, scale by height
-        vec2 uv    = (gl_FragCoord.xy - 0.5 * iResolution.xy) / iResolution.y;
-        vec2 mouse = (iMouse      - 0.5 * iResolution.xy) / iResolution.y;
+      void main() {
+        // Normalize to center, scale by height
+        vec2 uv    = (gl_FragCoord.xy - 0.5 * iResolution.xy) / iResolution.y;
+        vec2 mouse = (iMouse      - 0.5 * iResolution.xy) / iResolution.y;
 
-        // Time warp
-        float t = iTime * 0.5;
-        uv -= mouse;
+        // Time warp - más rápido
+        float t = iTime * 0.8;
+        uv -= mouse * 0.5;
 
-        float r = length(uv) * 0.8;
-        float a = atan(uv.y, uv.x);
+        float r = length(uv);
+        float a = atan(uv.y, uv.x);
 
-        // Tunnel effect
-        vec3 finalColor = vec3(0.0);
-        float offset = 0.01;
-        finalColor.r = pow(fract(0.5 / length(uv + vec2(offset, 0.0)) + t * 2.0), 15.0);
-        finalColor.g = pow(fract(0.5 / length(uv)                  + t * 2.0), 15.0);
-        finalColor.b = pow(fract(0.5 / length(uv - vec2(offset, 0.0)) + t * 2.0), 15.0);
+        // Tunnel effect con más intensidad
+        vec3 finalColor = vec3(0.0);
+        float offset = 0.02;
+        
+        // Colores más brillantes y saturados
+        finalColor.r = pow(fract(0.3 / length(uv + vec2(offset, 0.0)) + t * 3.0), 8.0) * 2.0;
+        finalColor.g = pow(fract(0.3 / length(uv)                  + t * 3.0), 8.0) * 1.5;
+        finalColor.b = pow(fract(0.3 / length(uv - vec2(offset, 0.0)) + t * 3.0), 8.0) * 2.5;
 
-        float fade = smoothstep(0.0, 0.1, r);
-        finalColor *= fade;
+        // Agregar un resplandor adicional
+        float glow = 0.05 / (r + 0.1);
+        finalColor += vec3(glow * 0.3, glow * 0.5, glow * 0.8);
 
-        gl_FragColor = vec4(finalColor, 1.0);
-      }
-    `; // 3) Uniforms + Material + Mesh
+        // Fade más suave
+        float fade = smoothstep(0.0, 0.2, r) * smoothstep(1.5, 0.5, r);
+        finalColor *= fade;
+
+        gl_FragColor = vec4(finalColor, 1.0);
+      }
+    `;
 
     const uniforms = {
       iTime: { value: 0 },
@@ -69,10 +75,9 @@ const WarpDriveShader = () => {
 
     const geometry = new THREE.PlaneGeometry(2, 2);
     const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh); // 4) Resize handler
+    scene.add(mesh);
 
     const onResize = () => {
-      // Agregamos una comprobación de que 'container' existe
       const containerEl = containerRef.current;
       if (!containerEl) return;
       const width = containerEl.clientWidth;
@@ -81,21 +86,19 @@ const WarpDriveShader = () => {
       uniforms.iResolution.value.set(width, height);
     };
     window.addEventListener("resize", onResize);
-    onResize(); // initialize size
-    // 5) Mouse handler
+    onResize();
 
-    // Agregamos el tipo 'MouseEvent' a 'e' para TypeScript
     const onMouseMove = (e: MouseEvent) => {
       const containerEl = containerRef.current;
-      if (!containerEl) return; // flip Y so origin is bottom-left
+      if (!containerEl) return;
       uniforms.iMouse.value.set(e.clientX, containerEl.clientHeight - e.clientY);
     };
-    window.addEventListener("mousemove", onMouseMove); // 6) Animation loop
+    window.addEventListener("mousemove", onMouseMove);
 
     renderer.setAnimationLoop(() => {
       uniforms.iTime.value = clock.getElapsedTime();
       renderer.render(scene, camera);
-    }); // 7) Cleanup on unmount
+    });
 
     return () => {
       window.removeEventListener("resize", onResize);
@@ -115,22 +118,23 @@ const WarpDriveShader = () => {
   }, []);
 
   return (
-    <section id="warp-drive" className="relative w-full min-h-screen py-20">
+    <section id="warp-drive" className="relative w-full min-h-screen py-20 bg-black">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold mb-4">Experiencia Visual</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <h2 className="text-4xl font-bold mb-4 text-white">Experiencia Visual</h2>
+          <p className="text-gray-300 max-w-2xl mx-auto">
             Interactúa con el shader moviendo tu cursor
           </p>
         </div>
         <div
           ref={containerRef}
-          className="shader-container rounded-lg overflow-hidden mx-auto"
+          className="shader-container rounded-lg overflow-hidden mx-auto border border-white/10"
           style={{
             width: "100%",
             maxWidth: "1200px",
             height: "600px",
             position: "relative",
+            backgroundColor: "#000000",
           }}
           aria-label="Warp Drive animated background"
         />

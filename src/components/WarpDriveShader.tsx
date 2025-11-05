@@ -115,20 +115,27 @@ const WarpDriveShader = () => {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="shader-container"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        zIndex: -1,
-        pointerEvents: "none",
-      }}
-      aria-label="Warp Drive animated background"
-    />
+    <section id="warp-drive" className="relative w-full min-h-screen py-20">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-8">
+          <h2 className="text-4xl font-bold mb-4">Experiencia Visual</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Interactúa con el shader moviendo tu cursor
+          </p>
+        </div>
+        <div
+          ref={containerRef}
+          className="shader-container rounded-lg overflow-hidden mx-auto"
+          style={{
+            width: "100%",
+            maxWidth: "1200px",
+            height: "600px",
+            position: "relative",
+          }}
+          aria-label="Warp Drive animated background"
+        />
+      </div>
+    </section>
   );
 };
 

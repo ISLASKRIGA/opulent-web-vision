@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 const WarpDriveShader = () => {
+  // Agregamos <HTMLDivElement> para que TypeScript sepa qué tipo de elemento es
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -71,6 +72,7 @@ const WarpDriveShader = () => {
     scene.add(mesh); // 4) Resize handler
 
     const onResize = () => {
+      // Agregamos una comprobación de que 'container' existe
       const containerEl = containerRef.current;
       if (!containerEl) return;
       const width = containerEl.clientWidth;
@@ -82,6 +84,7 @@ const WarpDriveShader = () => {
     onResize(); // initialize size
     // 5) Mouse handler
 
+    // Agregamos el tipo 'MouseEvent' a 'e' para TypeScript
     const onMouseMove = (e: MouseEvent) => {
       const containerEl = containerRef.current;
       if (!containerEl) return; // flip Y so origin is bottom-left

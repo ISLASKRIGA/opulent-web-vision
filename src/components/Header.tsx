@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import logoAtom from "@/assets/LogoAtomStudios_SinFondo.png";
+import logoAtom from "@/assets/Atom_Studios_sin_fondo_1.png";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -25,8 +25,8 @@ const Header = () => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 bg-background/95 backdrop-blur-md ${
-        scrolled ? "shadow-luxury" : ""
+      className={`fixed top-0 left-0 right-0 z-50 transition-luxury ${
+        scrolled ? "bg-background/95 backdrop-blur-md shadow-luxury" : "bg-transparent"
       }`}
     >
       <div className="container mx-auto px-6 py-4">
@@ -37,8 +37,7 @@ const Header = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <img src={logoAtom} alt="Logo de Atom Studios" className="h-8 w-auto" />
-            <span className="text-2xl font-bold text-luxury-gold">Atom Studios</span>
+            <img src={logoAtom} alt="Atom Studios" className="h-12 w-auto" />
           </motion.button>
 
           <nav className="hidden md:flex items-center gap-8">

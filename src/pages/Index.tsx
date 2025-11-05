@@ -11,13 +11,13 @@ import Footer from "@/components/Footer";
 const Index = () => {
   return (
     <div className="min-h-screen">
-      <WarpDriveShader /> {/* <-- LÍNEA AÑADIDA */}
       <Header />
       <main>
         <Hero />
         <Clients />
         <Timeline data={timelineData} />
         <Pricing />
+        <WarpDriveShader />
         <Contact />
       </main>
       <Footer />

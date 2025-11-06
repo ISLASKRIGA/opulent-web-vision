@@ -1,34 +1,37 @@
-import { ContainerAnimated,
+import {
+  ContainerAnimated,
   ContainerScroll,
   ContainerStagger,
   ContainerSticky,
   GalleryCol,
-  GalleryContainer } from "@/components/blocks/animated-gallery"
+  GalleryContainer,
+} from "@/components/blocks/animated-gallery"
 import { Button } from "@/components/ui/button"
 import { VideoIcon } from "lucide-react"
 
-const IMAGES_1 = [
-  "https://images.unsplash.com/photo-1529218402470-5dec8fea0761?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGFkfGVufDB8fDB8fHww",
-  "https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHRva3lvfGVufDB8MHwwfHx8Mg%3D%3D",
-  "https://images.unsplash.com/photo-1604928141064-207cea6f571f?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8dG9reW98ZW58MHwwfDB8fHwy",
-  "https://images.unsplash.com/photo-1573455494060-c5595004fb6c?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8dG9reW98ZW58MHwwfDB8fHwy",
-]
-const IMAGES_2 = [
-  "https://images.unsplash.com/photo-1542052125323-e69ad37a47c2?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjJ8fHRva3lvfGVufDB8MHwwfHx8Mg%3D%3D",
-  "https://images.unsplash.com/photo-1564284369929-026ba231f89b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1532236204992-f5e85c024202?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fHRva3lvfGVufDB8MHwwfHx8Mg%3D%3D",
-  "https://images.unsplash.com/photo-1493515322954-4fa727e97985?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHRva3lvfGVufDB8MHwwfHx8Mg%3D%3D",
-]
-const IMAGES_3 = [
-  "https://images.unsplash.com/photo-1528361237150-8a9a7df33035?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1493515322954-4fa727e97985?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHRva3lvfGVufDB8MHwwfHx8Mg%3D%3D",
-  "https://images.unsplash.com/photo-1608875004752-2fdb6a39ba4c?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-]
+// ✅ Importa tus videos locales desde src/assets/videos/
+import client1 from "@/assets/videos/client1.mp4"
+import client2 from "@/assets/videos/client2.mp4"
+import client3 from "@/assets/videos/client3.mp4"
+import client4 from "@/assets/videos/client4.mp4"
+import client5 from "@/assets/videos/client5.mp4"
+import client6 from "@/assets/videos/client6.mp4"
+import client7 from "@/assets/videos/client7.mp4"
+import client8 from "@/assets/videos/client8.mp4"
+import client9 from "@/assets/videos/client9.mp4"
+import client10 from "@/assets/videos/client10.mp4"
+import client11 from "@/assets/videos/client11.mp4"
+import client12 from "@/assets/videos/client12.mp4"
+
+// ✅ Agrupamos los videos en tres columnas (puedes cambiar el orden si gustas)
+const VIDEOS_1 = [client1, client2, client3, client4]
+const VIDEOS_2 = [client5, client6, client7, client8]
+const VIDEOS_3 = [client9, client10, client11, client12]
 
 export default function Clients() {
   return (
     <div className="relative bg-background" id="clientes">
+      {/* ======= ENCABEZADO CON ANIMACIONES ======= */}
       <ContainerStagger className="relative z-[9999] -mb-12 place-self-center px-6 pt-12 text-center">
         <ContainerAnimated>
           <h1 className="font-serif text-4xl font-extralight md:text-5xl">
@@ -38,6 +41,7 @@ export default function Clients() {
             </span>
           </h1>
         </ContainerAnimated>
+
         <ContainerAnimated>
           <h1 className="font-serif text-4xl font-extralight md:text-5xl">
             para todos tus diseños
@@ -60,46 +64,63 @@ export default function Clients() {
           </Button>
         </ContainerAnimated>
       </ContainerStagger>
-      
-      <div 
+
+      {/* ======= EFECTO DE LUZ DORADA DE FONDO ======= */}
+      <div
         className="pointer-events-none absolute z-10 h-[70vh] w-full"
         style={{
-          background: "linear-gradient(to right, hsl(var(--primary)), hsl(var(--luxury-gold)), hsl(var(--primary)))",
+          background:
+            "linear-gradient(to right, hsl(var(--primary)), hsl(var(--luxury-gold)), hsl(var(--primary)))",
           filter: "blur(84px)",
           mixBlendMode: "screen",
         }}
       />
 
+      {/* ======= GALERÍA ANIMADA DE VIDEOS ======= */}
       <ContainerScroll className="relative h-[350vh]">
         <ContainerSticky className="h-svh">
-          <GalleryContainer className="">
+          <GalleryContainer>
+            {/* Columna 1 */}
             <GalleryCol yRange={["-10%", "2%"]} className="-mt-2">
-              {IMAGES_1.map((imageUrl, index) => (
-                <img
+              {VIDEOS_1.map((videoSrc, index) => (
+                <video
                   key={index}
+                  src={videoSrc}
                   className="aspect-video block h-auto max-h-full w-full rounded-md object-cover shadow"
-                  src={imageUrl}
-                  alt="gallery item"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                 />
               ))}
             </GalleryCol>
+
+            {/* Columna 2 */}
             <GalleryCol className="mt-[-50%]" yRange={["15%", "5%"]}>
-              {IMAGES_2.map((imageUrl, index) => (
-                <img
+              {VIDEOS_2.map((videoSrc, index) => (
+                <video
                   key={index}
+                  src={videoSrc}
                   className="aspect-video block h-auto max-h-full w-full rounded-md object-cover shadow"
-                  src={imageUrl}
-                  alt="gallery item"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                 />
               ))}
             </GalleryCol>
+
+            {/* Columna 3 */}
             <GalleryCol yRange={["-10%", "2%"]} className="-mt-2">
-              {IMAGES_3.map((imageUrl, index) => (
-                <img
+              {VIDEOS_3.map((videoSrc, index) => (
+                <video
                   key={index}
+                  src={videoSrc}
                   className="aspect-video block h-auto max-h-full w-full rounded-md object-cover shadow"
-                  src={imageUrl}
-                  alt="gallery item"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                 />
               ))}
             </GalleryCol>
